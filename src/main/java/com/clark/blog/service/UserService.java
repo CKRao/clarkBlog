@@ -36,11 +36,15 @@ public interface UserService {
     /**
      * 根据用户名和密码查找
      * @param userName
-     * @param password
      * @return
      */
-    User findUserByUserNameAndPassword(String userName, String password);
+    User findUserByUserName(String userName);
 
-    void inserUser(User user);
+    /**
+     * 插入用户
+     * @param user
+     * @return
+     */
+    User insertUser(User user);
 
 }

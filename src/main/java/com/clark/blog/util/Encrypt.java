@@ -16,12 +16,13 @@ public class Encrypt {
     /**
      * 盐值
      */
-    private static final String SALT = "dPBQ6pbaCBaQjwlXv0B44gj4ErTRMo+1Dn5BQPgdxeMNvZu3qV+XlBlG+nict9bN0rQITbqzpzY1zXG5JxkBPQeVagsk05nUqDamP7Lhc4XEFrQrQn86oqKsCaG988Too2ad85ns4B7TmMswTWKsGzA3xWKQj2qjtMnaMB2NwHBpMD2jxnQLdGQEtIw8n";
-
+    private static final String SALT = "clarkrao";
     /**
      * 加密算法类型
      */
-    public static final String KEY_SHA = "SHA";
+    public static final String KEY_MD5 = "MD5";
+
+    private final static String[] hexDigits = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
 
     /**
      * 密码加密
@@ -30,16 +31,36 @@ public class Encrypt {
      */
     public static String passwordEncrypt(String password) {
         String encrypt = "";
-        byte  data =Byte.parseByte(password + SALT);
+        byte[]  data = (password + SALT).getBytes();
         try {
             log.info("Start password Encrypt");
-            MessageDigest messageDigest = MessageDigest.getInstance(KEY_SHA);
+            MessageDigest messageDigest = MessageDigest.getInstance(KEY_MD5);
             messageDigest.update(data);
-            encrypt = messageDigest.digest().toString();
+            encrypt = byteArrayToHexString(messageDigest.digest());
             log.info("End password Encrypt");
         } catch (NoSuchAlgorithmException e) {
+            log.info("Error password Encrypt");
             e.printStackTrace();
         }
         return encrypt;
+    }
+
+
+    private static String byteArrayToHexString(byte[] b){
+        StringBuffer resultSb = new StringBuffer();
+        for(int i=0;i<b.length;i++){
+            resultSb.append(byteToHexString(b[i]));
+        }
+        return resultSb.toString();
+    }
+
+    private static String byteToHexString(byte b){
+        int n = b;
+        if (n < 0) {
+            n = 256 + n;
+        }
+        int d1 = n/16;
+        int d2 = n%16;
+        return hexDigits[d1] + hexDigits[d2];
     }
 }

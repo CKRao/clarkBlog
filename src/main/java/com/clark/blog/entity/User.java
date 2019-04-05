@@ -1,6 +1,7 @@
 package com.clark.blog.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,11 +16,12 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="native")
+    @GenericGenerator(name="native", strategy="native")
     private Long id;
 
     @Column(name = "user_name")
-    private String UserName;
+    private String userName;
 
     private String password;
 

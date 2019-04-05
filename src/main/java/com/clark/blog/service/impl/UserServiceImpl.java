@@ -6,14 +6,16 @@ import com.clark.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @Author: ClarkRao
  * @Date: 2019/4/5 21:26
- * @Description:
+ * @Description: 用户服务实现类
  */
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
@@ -37,15 +39,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByUserNameAndPassword(String userName, String password) {
-        User user = userDao.findUserByUserNameAndPassword(userName, password);
+    public User findUserByUserName(String userName) {
+        User user = userDao.findUserByUserName(userName);
         return user;
     }
 
     @Override
-    public void inserUser(User user) {
+    public User insertUser(User user) {
         User save = userDao.save(user);
-        
+        return save;
     }
 
 
