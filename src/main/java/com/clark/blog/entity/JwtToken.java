@@ -12,6 +12,9 @@ import org.apache.shiro.authc.AuthenticationToken;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtToken implements AuthenticationToken {
+    /**
+     * token
+     */
     private String token;
 
     @Override

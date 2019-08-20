@@ -23,7 +23,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
      * @param request
      * @param response
      * @param mappedValue
-     * @return
+     * @return boolean
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {

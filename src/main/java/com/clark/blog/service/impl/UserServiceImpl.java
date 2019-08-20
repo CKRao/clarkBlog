@@ -1,7 +1,8 @@
 package com.clark.blog.service.impl;
 
-import com.clark.blog.dao.UserDao;
-import com.clark.blog.entity.User;
+import cn.hutool.core.util.ObjectUtil;
+import com.clark.blog.dao.*;
+import com.clark.blog.entity.*;
 import com.clark.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: ClarkRao
@@ -17,37 +19,72 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserRoleDao userRoleDao;
+
+    @Autowired
+    private RoleDao roleDao;
+
+    @Autowired
+    private RolePermissionDao rolePermissionDao;
+
+    @Autowired
+    private PermissionDao permissionDao;
+
     @Override
     public User findUserById(Long id) {
-        User user = userDao.findById(id).get();
-        return user;
+        return userDao.findById(id).get();
     }
 
     @Override
     public List<User> findAllUsers() {
-        List<User> users = userDao.findAll();
-        return users;
+        return userDao.findAll();
     }
 
     @Override
     public Page<User> findUsers(Pageable pageable) {
-        Page<User> userPage = userDao.findAll(pageable);
-        return userPage;
+        return userDao.findAll(pageable);
     }
 
     @Override
     public User findUserByUserName(String userName) {
-        User user = userDao.findUserByUserName(userName);
-        return user;
+        return userDao.findUserByUserName(userName);
     }
 
     @Override
     public User insertUser(User user) {
-        User save = userDao.save(user);
-        return save;
+        return userDao.save(user);
+    }
+
+    @Override
+    public List<Role> selectRoleByUser(User user) {
+
+        if (ObjectUtil.isNull(user)) {
+            throw new NullPointerException("user is null");
+        }
+
+        List<Long> roleIds = userRoleDao.findByUserId(user.getId())
+                .stream()
+                .map(UserRole::getRoleId)
+                .collect(Collectors.toList());
+
+        return roleDao.findAllById(roleIds);
+    }
+
+    @Override
+    public List<Permission> selectPermissionByRole(Role role) {
+        if (ObjectUtil.isNull(role)) {
+            throw new NullPointerException("role is null");
+        }
+
+        List<Long> permissionIds = rolePermissionDao.findAllByRoleId(role.getId()).stream()
+                .map(RolePermission::getPermissionId)
+                .collect(Collectors.toList());
+        return permissionDao.findAllById(permissionIds);
     }
 
 

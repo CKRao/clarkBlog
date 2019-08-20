@@ -1,5 +1,7 @@
 package com.clark.blog.service;
 
+import com.clark.blog.entity.Permission;
+import com.clark.blog.entity.Role;
 import com.clark.blog.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,4 +49,17 @@ public interface UserService {
      */
     User insertUser(User user);
 
+    /**
+     * 根据用户查找角色
+     * @param user
+     * @return
+     */
+    List<Role> selectRoleByUser(User user);
+
+    /**
+     * 根据角色查找权限列表
+     * @param role
+     * @return
+     */
+    List<Permission> selectPermissionByRole(Role role);
 }
