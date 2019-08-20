@@ -27,4 +27,9 @@ public class ResponseBean {
      * 返回数据
      */
     private Object data;
+
+    /**
+     * 是否成功状态
+     */
+    private boolean success;
 }

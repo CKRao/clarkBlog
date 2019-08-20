@@ -1,12 +1,13 @@
 package com.clark.blog.shiro;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.clark.blog.entity.JwtToken;
 import com.clark.blog.entity.Permission;
 import com.clark.blog.entity.Role;
 import com.clark.blog.entity.User;
 import com.clark.blog.service.UserService;
 import com.clark.blog.util.JWTUtil;
-import com.clark.blog.util.ValidateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -77,12 +78,12 @@ public class MyRealm extends AuthorizingRealm {
         String token = (String) auth.getCredentials();
         // 解密获得username，用于和数据库进行对比
         String userName = JWTUtil.getUserName(token);
-        if (ValidateUtil.isEmpty(userName)) {
+        if (StrUtil.isBlank(userName)) {
             throw new AuthenticationException("token无效");
         }
 
         User user = userService.findUserByUserName(userName);
-        if (ValidateUtil.isEmpty(user)) {
+        if (ObjectUtil.isNull(user)) {
             throw new AuthenticationException("用户不存在!");
         }
         if (!JWTUtil.verify(token, userName, user.getPassword())) {
