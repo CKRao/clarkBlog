@@ -1,5 +1,6 @@
 package com.clark.blog.entity;
 
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,23 +14,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseBean {
-    /**
-     * 状态码
-     */
+
+    @ApiParam(name = "code",value = "状态码",required = true)
     private int code;
 
-    /**
-     * 返回信息
-     */
+
+    @ApiParam(name = "msg",value = "返回信息",required = true)
     private String msg;
 
-    /**
-     * 返回数据
-     */
+    @ApiParam(name = "data",value = "返回数据")
     private Object data;
 
-    /**
-     * 是否成功状态
-     */
+
+    @ApiParam(name = "success",value = "是否成功状态",required = true)
     private boolean success;
 }

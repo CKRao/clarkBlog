@@ -9,6 +9,9 @@ import com.clark.blog.service.UserService;
 import com.clark.blog.util.Encrypt;
 import com.clark.blog.util.JWTUtil;
 import com.clark.blog.util.ResponseBeanUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @ApiOperation(value = "登录", notes = "登录接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String",paramType = "form"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String",paramType = "form")
+    })
     @PostMapping("login")
     public ResponseBean login(@RequestParam("userName") String userName,
                               @RequestParam("password") String password) {
@@ -47,6 +55,8 @@ public class UserController {
         throw new UnauthorizedException();
     }
 
+    @ApiOperation(value = "注册", notes = "注册接口")
+    @ApiImplicitParam(name = "user", value = "用户", required = true, dataType = "User")
     @PostMapping("register")
     public ResponseBean register(@RequestBody User user) {
         String password = Encrypt.passwordEncrypt(user.getPassword());
@@ -59,7 +69,9 @@ public class UserController {
         return ResponseBeanUtil.error(HttpStatus.HTTP_INTERNAL_ERROR, "Register failed");
     }
 
-    @GetMapping("test/{ex}")
+    @ApiOperation(value = "测试全局异常", notes = "测试全局异常接口")
+    @ApiImplicitParam(name = "ex", value = "异常名称",dataType = "String", paramType = "path")
+    @GetMapping("test/exception/{ex}")
     public ResponseBean test(@PathVariable("ex") String ex) throws Exception {
         switch (ex) {
             case "Exception":
