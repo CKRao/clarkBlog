@@ -9,6 +9,7 @@ import com.clark.blog.service.UserService;
 import com.clark.blog.util.Encrypt;
 import com.clark.blog.util.JWTUtil;
 import com.clark.blog.util.ResponseBeanUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -27,15 +28,16 @@ import java.util.Map;
  */
 @RestController
 @Slf4j
+@Api(tags = "用户相关接口")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @ApiOperation(value = "登录", notes = "登录接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String",paramType = "form"),
-            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String",paramType = "form")
+            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping("login")
     public ResponseBean login(@RequestParam("userName") String userName,
@@ -70,7 +72,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "测试全局异常", notes = "测试全局异常接口")
-    @ApiImplicitParam(name = "ex", value = "异常名称",dataType = "String", paramType = "path")
+    @ApiImplicitParam(name = "ex", value = "异常名称", dataType = "String", paramType = "path")
     @GetMapping("test/exception/{ex}")
     public ResponseBean test(@PathVariable("ex") String ex) throws Exception {
         switch (ex) {
