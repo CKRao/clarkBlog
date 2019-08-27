@@ -3,6 +3,7 @@ package com.clark.blog.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.clark.blog.dao.*;
 import com.clark.blog.entity.*;
+import com.clark.blog.entity.enumType.RoleType;
 import com.clark.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -85,6 +86,15 @@ public class UserServiceImpl implements UserService {
                 .map(RolePermission::getPermissionId)
                 .collect(Collectors.toList());
         return permissionDao.findAllById(permissionIds);
+    }
+
+    @Override
+    public void initUserRole(RoleType roleType, User user) {
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        Role role = roleDao.findByRole(roleType);
+        userRole.setRoleId(role.getId());
+        userRoleDao.save(userRole);
     }
 
 

@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpStatus;
 import com.clark.blog.entity.ResponseBean;
 import com.clark.blog.entity.User;
+import com.clark.blog.entity.enumType.RoleType;
 import com.clark.blog.exception.UnauthorizedException;
 import com.clark.blog.service.UserService;
 import com.clark.blog.util.Encrypt;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +67,9 @@ public class UserController {
         user.setPassword(password);
         user.setCreateTime(new Date());
         User save = userService.insertUser(user);
+
         if (ObjectUtil.isNotNull(save)) {
+            userService.initUserRole(RoleType.ROLE_USER, save);
             return ResponseBeanUtil.success("Register success");
         }
         return ResponseBeanUtil.error(HttpStatus.HTTP_INTERNAL_ERROR, "Register failed");
@@ -74,6 +78,7 @@ public class UserController {
     @ApiOperation(value = "测试全局异常", notes = "测试全局异常接口")
     @ApiImplicitParam(name = "ex", value = "异常名称", dataType = "String", paramType = "path")
     @GetMapping("test/exception/{ex}")
+    @RequiresRoles({"ROLE_ADMIN"})
     public ResponseBean test(@PathVariable("ex") String ex) throws Exception {
         switch (ex) {
             case "Exception":

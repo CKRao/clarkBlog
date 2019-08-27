@@ -3,6 +3,7 @@ package com.clark.blog.service;
 import com.clark.blog.entity.Permission;
 import com.clark.blog.entity.Role;
 import com.clark.blog.entity.User;
+import com.clark.blog.entity.enumType.RoleType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -62,4 +63,6 @@ public interface UserService {
      * @return
      */
     List<Permission> selectPermissionByRole(Role role);
+
+    void initUserRole(RoleType roleType, User user);
 }

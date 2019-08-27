@@ -1,6 +1,7 @@
 package com.clark.blog.dao;
 
 import com.clark.blog.entity.Role;
+import com.clark.blog.entity.enumType.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.List;
  * @Description:
  */
 public interface RoleDao extends JpaRepository<Role,Long> {
-
+    Role findByRole(RoleType roleType);
 }
